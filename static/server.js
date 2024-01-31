@@ -25,18 +25,40 @@ app.get('/user/info', (req, res) => {
 });
 
 app.post('/user/login', (req, res) => {
-    console.log(req.body);
-    res.setHeader('Content-Type', 'text/plain;charset=utf8');
+  console.log(req.body);
+  res.setHeader('Content-Type', 'text/plain;charset=utf8');
+  const users = [
+    {
+      username: 'admin',
+      password: '000000'
+    },
+    {
+      username: 'test',
+      password: '111111'
+    },
+    {
+      username: 'prod',
+      password: '222222'
+    }
+  ]
+  if (users.find(e => e.username === req.body.username && e.password === req.body.password)) {
     res.send({
-        code: 20000,
-        data: {
-            username: req.body.username,
-            token: '3213232edcnjcnskncjsnkqjnjcndijc'
-        },
-        msg: 'success',
-        success: true
+      code: 20000,
+      data: {
+        username: req.body.username,
+        token: '3213232edcnjcnskncjsnkqjnjcndijc' + '#' + new Date().getTime()
+      },
+      msg: 'success',
+      success: true
     });
-  });
+  } else {
+    res.send({
+      code: 201,
+      msg: 'error',
+      success: false
+    });
+  }
+});
 
 // 定义POST请求的路由
 app.post('/user/logout', (req, res) => {
